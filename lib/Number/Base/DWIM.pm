@@ -2,12 +2,10 @@ package Number::Base::DWIM;
 
 use strict;
 use warnings;
-use overload
-  'fallback' => 1,
-  '""' => \&stringify,
-  '0+' => \&numify;
+use overload;
+use Scalar::Util qw(dualvar);
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 =head1 NAME
 
@@ -15,13 +13,13 @@ Number::Base::DWIM - delay parsing of based constants as long as possible.
 
 =head1 SYNOPSIS
 
-use Numbers::Base::DWIM
+    use Numbers::Base::DWIM
 
-my $x = 011;
-print $x, "\n";  # prints 9
-print "$x\n";    # prints 011
+    my $x = 011;
+    print $x, "\n";  # prints 9
+    print "$x\n";    # prints 011
 
-print oct($x)    # prints 011
+    print oct($x)    # prints 011
 
 =head1 DESCRIPTION
 
@@ -33,9 +31,14 @@ that the constant was declared in.
 This module was developed after an discussion where some people found
 the behavior of C<perl -e 'print oct 011, "\n";'> to be confusing.
 This module works around this by overloading the parsing of binary,
-hexidecimal and octal numeric constants.  It then stores them as a
-string internally, until either numification or stringification is
-requested.
+hexidecimal and octal numeric constants.  It then stores them in a
+C<dualvar>, as provided by L<Scalar::Util>.
+
+=head1 NOTES
+
+Originally this was implemented as a class, and the overload function
+returned an object with numification and stringification methods.
+Thanks to Brian D. Foy for suggesting that it use C<dualvar> instead.
 
 =head1 BUGS
 
@@ -57,23 +60,7 @@ it under the same terms as Perl itself.
 
 sub import {
   my $self = shift;
-  overload::constant binary => sub { $self->new(shift) };
-}
-
-sub new {
-  my $class = shift;
-  my $num = shift;
-  bless [ $num ], $class;
-}
-
-sub stringify {
-  my $self = shift;
-  $self->[0];
-}
-
-sub numify {
-  my $self = shift;
-  oct($self->[0]);
+  overload::constant binary => sub { dualvar(oct $_[0], $_[0]) };
 }
 
 1;

@@ -13,11 +13,12 @@ BEGIN {
 use Number::Base::DWIM;
 
 my $obj = 011;
-isa_ok($obj, "Number::Base::DWIM");
 
 is($obj . "", "011", "stringification");
 is(int($obj), 9, "numification");
 
 is($obj + 1, 10, "addition");
 is($obj - 1, 8, "subtraction");
-is($obj & 1, 1, "bitwise and")
+is($obj & 1, 1, "bitwise and");
+
+is($obj . "1", "0111", "concatentation");
