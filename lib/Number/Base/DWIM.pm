@@ -64,6 +64,8 @@ it under the same terms as Perl itself.
 sub import {
   my $self = shift;
   overload::constant binary => sub { dualvar(oct $_[0], $_[0]) };
+  
+  return;
 }
 
 1;
