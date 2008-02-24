@@ -1,7 +1,10 @@
-use ExtUtils::MakeMaker;
+use inc::Module::Install;
 
-WriteMakefile(NAME => 'Number::Base::DWIM',
-              PREREQ_FATAL => 1,
-              PREREQ_PM => { overload => 0 },
-	      VERSION_FROM => 'lib/Number/Base/DWIM.pm',
-	     );
+name 'Number-Base-DWIM';
+
+all_from 'lib/Number/Base/DWIM.pm';
+
+requires 'overload' => 0;
+
+WriteAll;
+

@@ -2,6 +2,9 @@ package Number::Base::DWIM;
 
 use strict;
 use warnings;
+
+use 5.006002;
+
 use overload;
 use Scalar::Util qw(dualvar);
 
