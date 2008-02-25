@@ -8,7 +8,7 @@ use 5.006002;
 use overload;
 use Scalar::Util qw(dualvar);
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 =head1 NAME
 
